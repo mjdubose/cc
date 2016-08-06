@@ -40,7 +40,6 @@ class MovieNew extends Component {
                     {actors.touched ? actors.error : ''}
                     </div>
                 </div>
-
                  <div className ={`form-group ${year.touched && year.invalid ? 'has-danger' : ''} `}>
                     <label>The Year The Movie Was Made</label>
                     <input type = "text" className="form-control" {...year}/>
@@ -55,8 +54,10 @@ class MovieNew extends Component {
                     {rating.touched ? rating.error : ''}
                     </div>
                 </div>
-                <button type="submit" className = "btn btn-primary">Submit </button>
-                <Link to="/" className="btn btn-danger"> Cancel </Link>
+                <div className="button-box">
+                  <button type="submit" className = "btn btn-primary">Submit </button>
+                  <Link to="/" className="btn btn-danger"> Cancel </Link>
+                </div>
             </form>
         )
     }
@@ -88,4 +89,3 @@ export default reduxForm({
     form: 'PostsNew',
     fields: ['title', 'genre', 'actors','year','rating'],validate
 },null,{createMovie})(MovieNew);
-
