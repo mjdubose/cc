@@ -1,11 +1,11 @@
 module.exports = {
   entry: [
-    './src/index.js'
+    './src/index.jsx'
   ],
   output: { path: __dirname + '/public', filename: 'bundle.js' },
   module: {
     loaders: [{
-      test: /\.js$/,
+      test: /\.jsx*$/,
       exclude: /node_modules/,
       loader: 'babel',
       query: {
