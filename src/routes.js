@@ -8,7 +8,6 @@ import MovieShow from './components/movie_show';
 export default (
     <Route path="/" component={App} >
         <IndexRoute component = {MovieIndex} />
-           <IndexRoute component = {MovieIndex} />
         <Route path="movies/new" component={MovieNew} />
         <Route path="movies/:id" component={MovieShow} />
     </Route>
