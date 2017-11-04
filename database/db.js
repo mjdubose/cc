@@ -41,8 +41,9 @@ knex.selectAllMovies = function () {
 };
 
 knex.searchMovies = function(term){
-    var query = "select * from movies where movies.title like '%"+term+"%'";
- return  knex.raw(query); 
+  //  var query = "select * from movies where movies.title like '%"+term+"%'";
+ return  knex('movies').select().where('title','like','%'+term+'%').orWhere('genre','like','%'+term+'%');
+
 };
 
 knex.insertMovie = function (movie) {
