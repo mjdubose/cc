@@ -1,70 +1,81 @@
 'use strict';
-var Server = require('./src/server.js');
-var express = require('express');
-var path = require('path');
-var app = Server.app();
-var db = require('./database/db.js');
+let Server = require('./src/server.js');
+let express = require('express');
+let path = require('path');
+let app = Server.app();
+let db = require('./database/db.js');
 db.ensureSchema();
 
 app.use('/', express.static(path.join(__dirname, "../public")));
-//http://localhost:3000/movies/all
+
 app.route('/movies/all')
-    .get(function (req, res) {
-        db.selectAllMovies()
-            .then(function (movies) {
-                res.status(200).send(movies);
-            });
+    .get(async (req, res) => {
+        try {
+            let movies = await db.selectAllMovies();
+            res.status(200).send(movies);
+        } catch (err) {
+            console.log(err.message);
+            res.sendStatus(404);
+        }
     });
 
-//http://localhost:3000/movies?id=1
+
 app.route('/movies')
-    .get(function (req, res) {
-
-        var id = req.query.id;
-  
-        db.selectMovie(id)
-            .then(function (movie) {
-          
-                res.status(200).send(movie);
-            });
+    .get(async (req, res) => {
+        try {
+            let id = req.query.id;
+            let movie = await db.selectMovie(id);
+            res.status(200).send(movie);
+        } catch (err) {
+            console.log(err.message);
+            res.sendStatus(404);
+        }
     });
-//http://localhost:3000/movies/add?genre='western'&actors='will smith'&year='1979'&rating='5 stars'&title='made up'
+
 app.route('/movies/add')
-    .post(function (req, res) {
-        var movie = {};
-        movie.genre = req.query.genre;
-        movie.actors = req.query.actors;
-        movie.year = req.query.year;
-        movie.rating = req.query.rating;
-        movie.title = req.query.title;
-        db.insertMovie(movie)
-            .then(function () {
-                res.sendStatus(200);
-            })
+    .post(async (req, res) => {
+        try {
+            let movie = {};
+            movie.genre = req.query.genre;
+            movie.actors = req.query.actors;
+            movie.year = req.query.year;
+            movie.rating = req.query.rating;
+            movie.title = req.query.title;
+            await db.insertMovie(movie);
+            res.sendStatus(200);
+        } catch (err) {
+            console.log(err.message);
+            res.sendStatus(404);
+        }
+
     });
-//http://localhost:3000/movies/search?term='made'
+
 app.route('/movies/search')
-    .get(function (req, res) {
-        var term = req.query.term;
+    .get(async (req, res) => {
+        try {
+            let term = req.query.term;
+            let result = await db.searchMovies(term);
+            res.status(200).send(result);
 
-        db.searchMovies(term)
-            .then(function (result) {
-                res.status(200).send(result);
-            })
+        } catch (err) {
+            console.log(err.message);
+            res.sendStatus(404);
+        }
+
     });
 
-//http://localhost:3000/movies/delete?id=1
+
 app.route('/movies/delete')
-    .delete(function (req, res) {
-     
-        var id = req.query.id;
-        db.deleteMovie(id)
-            .then(function () {
-                res.sendStatus(200);
-            }).catch(function (err) {
-                console.log(err.message);
-                res.sendStatus(404);
-            })
+    .delete(async (req, res) => {
+
+        let id = req.query.id;
+        await db.deleteMovie(id);
+        try {
+            res.sendStatus(200);
+        } catch (err) {
+            console.log(err.message);
+            res.sendStatus(404);
+        }
     });
 
 console.log('running on port', process.env.PORT || 3000);

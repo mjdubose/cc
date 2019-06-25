@@ -33,7 +33,7 @@ class MovieNew extends Component {
                         {genre.touched ? genre.error : ''}
                     </div>
                 </div>
-                <div className ={`form-group ${actors.touchegitd && actors.invalid ? 'has-danger' : ''} `}>
+                <div className ={`form-group ${actors.touched && actors.invalid ? 'has-danger' : ''} `}>
                     <label>Actors</label>
                     <textarea  className="form-control" {...actors} />
                     <div className='text-help'>

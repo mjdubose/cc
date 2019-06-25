@@ -16,7 +16,7 @@ export function movieSearch(term){
 }
 
 export function createMovie(props){
-var buildString = `?genre=${props.genre}&actors=${props.actors}&year=${props.year}&rating=${props.rating}&title=${props.title}`;
+let buildString = `?genre=${props.genre}&actors=${props.actors}&year=${props.year}&rating=${props.rating}&title=${props.title}`;
 const request = axios.post(`${ROOT_URL}/add${buildString}`);
 return {
     type: CREATE_MOVIE,
